@@ -1,24 +1,30 @@
-import logo from './logo.svg';
 import './App.css';
+import { Canvas } from 'react-three-fiber'
+
+function Cube() {
+  return (
+    <mesh rotation={[10, 10, 10]} position={[0, 0, 0]}>
+      <boxBufferGeometry attach='geometry' args={[1, 1, 1]} />
+      <meshStandardMaterial attach='material' color='pink' />
+    </mesh>
+  )
+}
+
+function Scene() {
+  return (
+    <>
+      <ambientLight />
+      <pointLight position={[-1, 2, 4]} intensity={0.3} />
+      <Cube />
+    </>
+  )
+}
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Canvas>
+      <Scene />
+    </Canvas>
   );
 }
 
