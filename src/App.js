@@ -1,15 +1,40 @@
 import './App.css';
+import { useState, useRef } from 'react';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
-import { Canvas, useThree, extend } from 'react-three-fiber'
+import { Canvas, useThree, extend, useFrame } from 'react-three-fiber'
+import { useSpring } from 'react-spring'
+import { a } from '@react-spring/three'
 
 extend({ OrbitControls });
 
 function Cube(props) {
+  const [isBig, setIsBig] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const ref = useRef();
+
+  const { size, x } = useSpring({
+    size: isBig ? [2, 2, 2] : [1, 1, 1],
+    x: isBig ? 2 : 0
+  });
+
+  const color = isHovered ? 'pink' : 'salmon';
+
+  useFrame(() => {
+    ref.current.rotation.x += 0.01;
+    ref.current.rotation.y += 0.01;
+  });
+
   return (
-    <mesh {...props}>
-      <boxBufferGeometry attach='geometry' args={[1, 1, 1]} />
-      <meshStandardMaterial attach='material' color='pink' />
-    </mesh>
+    <a.mesh {...props}
+      ref={ref}
+      scale={size}
+      onClick={() => setIsBig(!isBig)}
+      onPointerOver={() => setIsHovered(true)}
+      onPointerOut={() => setIsHovered(false)}
+      position-x={x}>
+      <sphereBufferGeometry attach='geometry' args={[1, 8, 6]} />
+      <meshStandardMaterial attach='material' color={color} />
+    </a.mesh>
   )
 }
 
