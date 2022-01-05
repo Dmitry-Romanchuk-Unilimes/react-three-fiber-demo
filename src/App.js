@@ -32,9 +32,19 @@ function Cube(props) {
       onPointerOver={() => setIsHovered(true)}
       onPointerOut={() => setIsHovered(false)}
       position-x={x}>
-      <sphereBufferGeometry attach='geometry' args={[1, 8, 6]} />
-      <meshStandardMaterial attach='material' color={color} />
+      <boxBufferGeometry attach='geometry' args={[1, 1, 1]} />
+      {/* <sphereBufferGeometry attach='geometry' args={[1, 8, 6]} /> */}
+      <meshPhysicalMaterial attach='material' color={color} roughness={1} metalness={0.5} clearcoat={1} />
     </a.mesh>
+  )
+}
+
+function Plane() {
+  return (
+    <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -2, 0]}>
+      <planeBufferGeometry attach='geometry' args={[10, 10]} />
+      <meshStandardMaterial attach='material' color='#d3d3d3' />
+    </mesh>
   )
 }
 
@@ -47,7 +57,7 @@ function Scene() {
       <pointLight position={[-1, 2, 4]} intensity={0.3} />
       <Cube rotation={[10, 10, 10]} position={[0, 0, 0]} />
       <Cube rotation={[10, 20, 10]} position={[2, 2, 0]} />
-
+      <Plane />
       <orbitControls args={[camera, domElement]} />
     </>
   )
